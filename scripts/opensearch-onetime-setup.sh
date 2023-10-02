@@ -12,6 +12,7 @@
 
 export OPENSEARCH_HOME=`dirname $(realpath $0)`
 export OPENSEARCH_PATH_CONF=$OPENSEARCH_HOME/config
+export SECURITY_PLUGIN_ADMIN_PASSWORD_FILE=$OPENSEARCH_PATH_CONF/initialAdminPassword.txt
 cd $OPENSEARCH_HOME
 
 ##Security Plugin
@@ -21,6 +22,10 @@ if [ -d "$OPENSEARCH_HOME/plugins/$SECURITY_PLUGIN" ]; then
         echo "Disabling execution of install_demo_configuration.sh for OpenSearch Security Plugin"
     else
         echo "Enabling execution of install_demo_configuration.sh for OpenSearch Security Plugin"
+        echo "Setup Default Admin Password"
+        export adminPassword=$initialAdminPassword
+        touch $SECURITY_PLUGIN_ADMIN_PASSWORD_FILE
+        echo "admin" >> $SECURITY_PLUGIN_ADMIN_PASSWORD_FILE
         bash $OPENSEARCH_HOME/plugins/$SECURITY_PLUGIN/tools/install_demo_configuration.sh -y -i -s
     fi
 
